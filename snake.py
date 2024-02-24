@@ -3,6 +3,12 @@
 from tkinter import *
 import random
 
+# game values
+GAME_HEIGHT = 1000
+GAME_WIDTH = 1000
+SPEED = 50
+SPACE_SIZE = 100
+BODY_PARTS = 3
 class snake:
     pass
 
@@ -23,3 +29,15 @@ def game_over():
 
 def restart_game():
     pass
+
+# interactive console
+window = Tk()
+window.title('Snake')
+window.resizable(False, False)
+
+score = 0
+direction = 'down'
+
+label = Label(window, text='Score:{}'.format(score))
+
+window.mainloop()
