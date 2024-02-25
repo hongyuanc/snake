@@ -4,8 +4,8 @@ from tkinter import *
 import random
 
 # game values
-GAME_HEIGHT = '10i'
-GAME_WIDTH = '10i'
+GAME_HEIGHT = 800
+GAME_WIDTH = 800
 SPEED = 50
 SPACE_SIZE = 100
 BODY_PARTS = 3
@@ -37,13 +37,13 @@ def restart_game():
 # interactive console
 window = Tk()
 window.title('Snake')
-window.resizable(False, False)
-
+window.resizable(True, True)
+                
 score = 0
 direction = 'down'
 
 # displays score
-label = Label(window, text='Score:{}'.format(score), font = ('consolas', 40))
+label = Label(window, text='Score: {}'.format(score), font = ('Verdana', 40))
 label.pack()
 
 # displays the game board
@@ -62,5 +62,9 @@ x = int((screen_width/2) - (window_width/2))
 y = int((screen_height/2) - (window_height/2))
 
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+snake = snake()
+
+food = food()
 
 window.mainloop()
