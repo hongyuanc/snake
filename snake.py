@@ -113,18 +113,27 @@ def game_over():
                        font=('Verdana',50), text="GAME OVER", fill="red", tag="gameover")
     canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2 + 2*SPACE_SIZE,
                        font=('Verdana',30), text="Press r to try again", fill="black", tag="restart")
+    canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2 + 3.5*SPACE_SIZE,
+                       font=('Verdana',30), text="Press q to quit", fill="black", tag="quit")
+    return True
 
 def restart_game():
     global snake, food, score, direction
 
-    # Reset game variables to initial values
-    canvas.delete(ALL)
-    snake = Snake()
-    food = Food()
-    score = 0
-    direction = 'down'
-    label.config(text="Score:{}".format(score))
-    next_turn(snake, food)
+    # Reset game variables to initial values on condition game is over
+    if 'gameover' in canvas.gettags(ALL):
+        canvas.delete(ALL)
+        snake = Snake()
+        food = Food()
+        score = 0
+        direction = 'down'
+        label.config(text="Score:{}".format(score))
+        next_turn(snake, food)
+
+
+def quit_game():
+    if 'gameover' in canvas.gettags(ALL):
+        window.destroy()
 
 # interactive console
 window = Tk()
@@ -160,14 +169,12 @@ window.bind('<Right>', lambda event: change_direction('right'))
 window.bind('<Up>', lambda event: change_direction('up'))
 window.bind('<Down>', lambda event: change_direction('down'))
 window.bind('<r>', lambda event: restart_game())
+window.bind('<q>', lambda event: quit_game())
 
 snake = Snake()
 
 food = Food()
 
 next_turn(snake, food)
-
-restart_button = Button(window, text="Restart", command=restart_game, font=('Verdana', 20))
-restart_button.place(x=0, y=0)
 
 window.mainloop()
