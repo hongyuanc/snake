@@ -69,14 +69,43 @@ def next_turn(snake, food):
         canvas.delete(snake.squares[-1])
         del snake.squares[-1]
 
-def change_direction(direction):
-    pass
+    if collision(snake) == True:
+        game_over()
+    else:
+        window.after(SPEED, next_turn, snake, food)
+
+def change_direction(new_direction):
+    if new_direction == 'up':
+        if direction != 'down':
+            direction = new_direction
+    elif new_direction == 'down':
+        if direction != 'up':
+            direction = new_direction
+    elif new_direction == 'left':
+        if direction != 'right':
+            direction = new_direction
+    elif new_direction == 'right':
+        if direction != 'left':
+            direction = new_direction
 
 def collision():
-    pass
+    x, y = snake.coordinates[0]
+
+    if x < 0 or x >= GAME_WIDTH:
+        return True
+    elif y < 0 or y >= GAME_HEIGHT:
+        return True
+    
+    for BODY_PARTS in snake.coordinates[1:]:
+        if x == snake.coordinates[0] and y == snake.coordinates[1]:
+            return True
+
+    return False
 
 def game_over():
-    pass
+    canvas.delete(ALL)
+    canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,
+                       font=('Verdana',50), text="GAME OVER", fill="red", tag="gameover")
 
 def restart_game():
     pass
