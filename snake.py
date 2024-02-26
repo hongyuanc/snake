@@ -41,8 +41,17 @@ class food:
 
         canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOR, tag="food")
 
-def next_turn():
-    pass
+def next_turn(snake, food):
+    x, y = snake.coordiates[0]
+
+    if direction == 'up':
+        y -= SPACE_SIZE
+    elif direction == 'down':
+        y += SPACE_SIZE
+    elif direction == 'right':
+        x += SPACE_SIZE
+    else:
+        x -= SPACE_SIZE
 
 def change_direction(direction):
     pass
