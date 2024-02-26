@@ -31,7 +31,7 @@ class snake:
             self.squares.append(square)
         
 
-class food:
+class Food:
     def __init__(self): 
 
         x = random.randint(0, (GAME_WIDTH / SPACE_SIZE)-1) * SPACE_SIZE
@@ -42,7 +42,7 @@ class food:
         canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOR, tag="food")
 
 def next_turn(snake, food):
-    x, y = snake.coordiates[0]
+    x, y = snake.coordinates[0]
 
     if direction == 'up':
         y -= SPACE_SIZE
@@ -60,10 +60,13 @@ def next_turn(snake, food):
     snake.squares.insert(0, square)
 
     if x == food.coordinates[0] and y == food.coordinates[1]:
+
+        global score
+
         score += 1
         label.config(text="Score:{}".format(score))
         canvas.delete("food")
-        food = food()
+        food = Food()
     else:
         del snake.coordinates[-1]
         canvas.delete(snake.squares[-1])
@@ -75,6 +78,9 @@ def next_turn(snake, food):
         window.after(SPEED, next_turn, snake, food)
 
 def change_direction(new_direction):
+
+    global direction
+
     if new_direction == 'up':
         if direction != 'down':
             direction = new_direction
@@ -88,7 +94,7 @@ def change_direction(new_direction):
         if direction != 'left':
             direction = new_direction
 
-def collision():
+def collision(snake):
     x, y = snake.coordinates[0]
 
     if x < 0 or x >= GAME_WIDTH:
@@ -139,8 +145,15 @@ y = int((screen_height/2) - (window_height/2))
 
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
+window.bind('<Left>', lambda event: change_direction('left'))
+window.bind('<Right>', lambda event: change_direction('right'))
+window.bind('<Up>', lambda event: change_direction('up'))
+window.bind('<Down>', lambda event: change_direction('down'))
+
 snake = snake()
 
-food = food()
+food = Food()
+
+next_turn(snake, food)
 
 window.mainloop()
