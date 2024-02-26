@@ -1,5 +1,4 @@
 #snake
-
 from tkinter import *
 import random
 
@@ -7,13 +6,13 @@ import random
 GAME_HEIGHT = 800
 GAME_WIDTH = 800
 SPEED = 50
-SPACE_SIZE = 50
+SPACE_SIZE = 25
 BODY_PARTS = 3
 BACKGROUND = '#FFFFFF'
 BODY_COLOR = '#6495ED'
 FOOD_COLOR = '#B53737'
 
-class snake:
+class Snake:
     def __init__(self):
 
         self.body_parts = BODY_PARTS
@@ -112,9 +111,20 @@ def game_over():
     canvas.delete(ALL)
     canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,
                        font=('Verdana',50), text="GAME OVER", fill="red", tag="gameover")
+    canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2 + 2*SPACE_SIZE,
+                       font=('Verdana',30), text="Press r to try again", fill="black", tag="restart")
 
 def restart_game():
-    pass
+    global snake, food, score, direction
+
+    # Reset game variables to initial values
+    canvas.delete(ALL)
+    snake = Snake()
+    food = Food()
+    score = 0
+    direction = 'down'
+    label.config(text="Score:{}".format(score))
+    next_turn(snake, food)
 
 # interactive console
 window = Tk()
@@ -149,11 +159,15 @@ window.bind('<Left>', lambda event: change_direction('left'))
 window.bind('<Right>', lambda event: change_direction('right'))
 window.bind('<Up>', lambda event: change_direction('up'))
 window.bind('<Down>', lambda event: change_direction('down'))
+window.bind('<r>', lambda event: restart_game())
 
-snake = snake()
+snake = Snake()
 
 food = Food()
 
 next_turn(snake, food)
+
+restart_button = Button(window, text="Restart", command=restart_game, font=('Verdana', 20))
+restart_button.place(x=0, y=0)
 
 window.mainloop()
